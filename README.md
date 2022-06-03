@@ -1,4 +1,4 @@
-# Lib Arch Delegate
+# android-ui-state
 
 a class representing the state of ui.
 
