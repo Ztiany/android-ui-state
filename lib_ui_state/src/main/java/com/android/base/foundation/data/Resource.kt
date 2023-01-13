@@ -3,23 +3,23 @@ package com.android.base.foundation.data
 /**
  * @author Ztiany
  */
-sealed class Resource<out T> {
+sealed class Resource<out D, out E> {
 
     companion object {
 
-        fun <T> noData(): Resource<T> {
+        fun <D, E> noData(): Resource<D, E> {
             return NoData()
         }
 
-        fun <T> success(data: T): Resource<T> {
+        fun <D, E> success(data: D): Resource<D, E> {
             return Data(data)
         }
 
-        fun <T> error(error: Throwable): Resource<T> {
-            return Error(error)
+        fun <D, E> error(error: Throwable, reason: E? = null): Resource<D, E> {
+            return Error(error, reason)
         }
 
-        fun <T> loading(): Resource<T> {
+        fun <D, E> loading(): Resource<D, E> {
             return Loading
         }
 
@@ -27,9 +27,9 @@ sealed class Resource<out T> {
 
 }
 
-object Loading : Resource<Nothing>()
+object Loading : Resource<Nothing, Nothing>()
 
-class Error(val error: Throwable) : Resource<Nothing>() {
+class Error<E>(val error: Throwable, val reason: E?) : Resource<Nothing, E>() {
 
     private var handled = false
     val isHandled: Boolean
@@ -45,7 +45,7 @@ class Error(val error: Throwable) : Resource<Nothing>() {
 
 }
 
-sealed class Success<T> : Resource<T>() {
+sealed class Success<D> : Resource<D, Nothing>() {
 
     private var handled = false
     val isHandled: Boolean
@@ -57,7 +57,7 @@ sealed class Success<T> : Resource<T>() {
 
 }
 
-class Data<T>(val value: T) : Success<T>() {
+class Data<D>(val value: D) : Success<D>() {
 
     override fun toString(): String {
         return "Data(value=$value)"

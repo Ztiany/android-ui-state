@@ -8,5 +8,5 @@
 
 ```groovy
 // https://mvnrepository.com/artifact/io.github.ztiany/android-ui-state
-implementation 'io.github.ztiany:android-ui-state:1.0.0'
+implementation 'io.github.ztiany:android-ui-state:1.0.2'
 ```

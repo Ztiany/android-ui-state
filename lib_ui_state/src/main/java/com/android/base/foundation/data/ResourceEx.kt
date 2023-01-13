@@ -1,7 +1,7 @@
 package com.android.base.foundation.data
 
 /**when in loading*/
-inline fun <T> Resource<T>.onLoading(onLoading: () -> Unit): Resource<T> {
+inline fun <D, E> Resource<D, E>.onLoading(onLoading: () -> Unit): Resource<D, E> {
     if (this is Loading) {
         onLoading()
     }
@@ -9,7 +9,7 @@ inline fun <T> Resource<T>.onLoading(onLoading: () -> Unit): Resource<T> {
 }
 
 /**when error occurred*/
-inline fun <T> Resource<T>.onError(onError: (error: Throwable) -> Unit): Resource<T> {
+inline fun <D, E> Resource<D, E>.onError(onError: (error: Throwable) -> Unit): Resource<D, E> {
     if (this is Error) {
         onError(error)
     }
@@ -17,27 +17,29 @@ inline fun <T> Resource<T>.onError(onError: (error: Throwable) -> Unit): Resourc
 }
 
 /**when succeeded*/
-inline fun <T> Resource<T>.onSuccess(onSuccess: (data: T?) -> Unit): Resource<T> {
+inline fun <D, E> Resource<D, E>.onSuccess(onSuccess: (data: D?) -> Unit): Resource<D, E> {
     if (this is NoData) {
         onSuccess(null)
-    } else if (this is Data<T>) {
+    } else if (this is Data<D>) {
         onSuccess(value)
     }
     return this
 }
 
 /**when succeeded and has data*/
-inline fun <T> Resource<T>.onData(onData: (data: T) -> Unit): Resource<T> {
-    if (this is Data<T>) {
+inline fun <D, E> Resource<D, E>.onData(onData: (data: D) -> Unit): Resource<D, E> {
+    if (this is Data<D>) {
         onData(value)
     }
     return this
 }
 
 /**when succeeded*/
-inline fun <T> Resource<T>.onNoData(onNoData: () -> Unit): Resource<T> {
-    if (this is Data<T>) {
+inline fun <D, E> Resource<D, E>.onNoData(onNoData: () -> Unit): Resource<D, E> {
+    if (this is Data<D>) {
         onNoData()
     }
     return this
 }
+
+typealias ResourceNR<D> = Resource<D, Nothing>
