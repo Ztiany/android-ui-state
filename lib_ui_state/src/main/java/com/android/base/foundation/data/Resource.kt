@@ -40,7 +40,7 @@ class Error<E>(val error: Throwable, val reason: E?) : Resource<Nothing, E>() {
     }
 
     override fun toString(): String {
-        return "Error(error=$error)"
+        return "Error(error=$error, reason=$reason, handled=$isHandled)"
     }
 
 }
@@ -59,10 +59,6 @@ sealed class Success<D> : Resource<D, Nothing>() {
 
 class Data<D>(val value: D) : Success<D>() {
 
-    override fun toString(): String {
-        return "Data(value=$value)"
-    }
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -75,6 +71,16 @@ class Data<D>(val value: D) : Success<D>() {
         return value?.hashCode() ?: 0
     }
 
+    override fun toString(): String {
+        return "Data(value=$value, handled=$isHandled)"
+    }
+
 }
 
-class NoData : Success<Nothing>()
+class NoData : Success<Nothing>() {
+
+    override fun toString(): String {
+        return "NoData(hash=${hashCode()}, handled=$isHandled)"
+    }
+
+}
