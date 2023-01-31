@@ -13,7 +13,20 @@ class MainActivity : AppCompatActivity(), LoadingViewHost {
         setContentView(R.layout.activity_main)
         Timber.plant(DebugTree())
 
+        handleLiveData(TestViewModel().gameDetailState) {
+            onSuccess = {
+
+            }
+
+            onError = { error, reason ->
+
+            }
+        }
+
         handleLiveData(TestViewModel().gameDetailState1) {
+            onSuccess = {
+
+            }
             onError = { error, reason ->
 
             }

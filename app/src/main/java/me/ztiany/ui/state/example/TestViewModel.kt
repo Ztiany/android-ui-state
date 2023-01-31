@@ -5,16 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.base.foundation.data.Resource
 import com.android.base.foundation.data.ResourceNR
+import com.android.base.foundation.data.ResourceU
 
 data class Game(val id: Int)
 
 class TestViewModel : ViewModel() {
 
-    private val _gameDetailState = MutableLiveData<Resource<Game, Nothing>>()
-    val gameDetailState: LiveData<Resource<Game, Nothing>> = _gameDetailState
+    private val _gameDetailState = MutableLiveData<Resource<Game, Reason>>()
+    val gameDetailState: LiveData<Resource<Game, Reason>> = _gameDetailState
 
-    private val _gameDetailState1 = MutableLiveData<ResourceNR<Game>>()
-    val gameDetailState1: LiveData<ResourceNR<Game>> = _gameDetailState
+    private val _gameDetailState1 = MutableLiveData<ResourceU<Game>>()
+    val gameDetailState1: LiveData<ResourceU<Game>> = _gameDetailState1
 
     fun test() {
         _gameDetailState.value = Resource.loading()
@@ -28,7 +29,7 @@ class TestViewModel : ViewModel() {
         _gameDetailState1.value = Resource.error(NullPointerException())
 
         _gameDetailState.setLoading()
-        _gameDetailState.setError(NullPointerException())
+        _gameDetailState.setError(NullPointerException(), Reason("Null"))
         _gameDetailState.setData(Game(1))
         _gameDetailState.setSuccess()
 
@@ -39,3 +40,5 @@ class TestViewModel : ViewModel() {
     }
 
 }
+
+data class Reason(val message: String)
