@@ -17,7 +17,9 @@ class MainActivity : AppCompatActivity(), LoadingViewHost {
             onSuccess = {
 
             }
+            onLoading = {
 
+            }
             onError = { error, reason ->
 
             }
@@ -27,7 +29,8 @@ class MainActivity : AppCompatActivity(), LoadingViewHost {
             onSuccess = {
 
             }
-            onError = { error, reason ->
+
+            onError = { error, _ ->
 
             }
         }

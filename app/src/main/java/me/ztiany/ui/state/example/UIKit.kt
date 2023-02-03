@@ -10,10 +10,10 @@ fun LoadingViewHost.dismissLoadingDialogDelayed(onDismiss: (() -> Unit)? = null)
 }
 
 /** Configure how to handle UI state [Resource]. */
-class ResourceHandlerBuilder<D, E> {
+class ResourceHandlerBuilder<L, D, E> {
 
     /** [onLoading] will be called once [Resource] is [Loading]. */
-    var onLoading: (() -> Unit)? = null
+    var onLoading: ((L?) -> Unit)? = null
 
     /** [onError] will be called once [Resource] is [Error]. */
     var onError: ((Throwable, E?) -> Unit)? = null
@@ -53,11 +53,11 @@ class ResourceHandlerBuilder<D, E> {
  *
  * 另外需要注意的是：[ResourceHandlerBuilder.onSuccess] =  [ResourceHandlerBuilder.onData] + [ResourceHandlerBuilder.onNoData]，请根据你的偏好进行选择。
  */
-fun <H, D, E> H.handleLiveData(
-    data: LiveData<Resource<D, E>>,
-    handlerBuilder: ResourceHandlerBuilder<D, E>.() -> Unit
+fun <H, L, D, E> H.handleLiveData(
+    data: LiveData<Resource<L, D, E>>,
+    handlerBuilder: ResourceHandlerBuilder<L, D, E>.() -> Unit
 ) where H : LoadingViewHost, H : LifecycleOwner {
-    val builder = ResourceHandlerBuilder<D, E>()
+    val builder = ResourceHandlerBuilder<L, D, E>()
     handlerBuilder(builder)
 
     data.observe(this) { state ->
@@ -66,18 +66,18 @@ fun <H, D, E> H.handleLiveData(
 }
 
 /** refer to [handleLiveData]. */
-fun <H, D, E> H.handleResource(
-    state: Resource<D, E>,
-    handlerBuilder: ResourceHandlerBuilder<D, E>.() -> Unit
+fun <H, L, D, E> H.handleResource(
+    state: Resource<L, D, E>,
+    handlerBuilder: ResourceHandlerBuilder<L, D, E>.() -> Unit
 ) where H : LoadingViewHost, H : LifecycleOwner {
-    val builder = ResourceHandlerBuilder<D, E>()
+    val builder = ResourceHandlerBuilder<L, D, E>()
     handlerBuilder(builder)
     handleResourceInternal(state, builder)
 }
 
-private fun <H, D, E> H.handleResourceInternal(
-    state: Resource<D, E>,
-    handlerBuilder: ResourceHandlerBuilder<D, E>
+private fun <H, L, D, E> H.handleResourceInternal(
+    state: Resource<L, D, E>,
+    handlerBuilder: ResourceHandlerBuilder<L, D, E>
 ) where H : LoadingViewHost, H : LifecycleOwner {
 
     when (state) {
@@ -88,7 +88,7 @@ private fun <H, D, E> H.handleResourceInternal(
                 if (handlerBuilder.onLoading == null) {
                     showLoadingDialog(handlerBuilder.loadingMessage, !handlerBuilder.forceLoading)
                 } else {
-                    handlerBuilder.onLoading?.invoke()
+                    handlerBuilder.onLoading?.invoke(state.step)
                 }
             }
         }
