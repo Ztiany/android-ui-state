@@ -81,6 +81,10 @@ private fun <H, L, D, E> H.handleResourceInternal(
 ) where H : LoadingViewHost, H : LifecycleOwner {
 
     when (state) {
+        Uninitialized -> {
+            //no op
+        }
+
         //----------------------------------------loading start
         // The loading state should always be handled, so we ignore the clearAfterHanded config here.
         is Loading -> {

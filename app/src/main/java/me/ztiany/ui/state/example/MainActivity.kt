@@ -37,39 +37,39 @@ class MainActivity : AppCompatActivity(), LoadingViewHost {
     }
 
     override fun showLoadingDialog(): Dialog {
-        TODO("Not yet implemented")
+        TODO()
     }
 
     override fun showLoadingDialog(cancelable: Boolean): Dialog {
-        TODO("Not yet implemented")
+        TODO()
     }
 
     override fun showLoadingDialog(message: CharSequence, cancelable: Boolean): Dialog {
-        TODO("Not yet implemented")
+        TODO()
     }
 
     override fun showLoadingDialog(messageId: Int, cancelable: Boolean): Dialog {
-        TODO("Not yet implemented")
+        TODO()
     }
 
     override fun dismissLoadingDialog() {
-        TODO("Not yet implemented")
+        
     }
 
     override fun dismissLoadingDialog(minimumMills: Long, onDismiss: (() -> Unit)?) {
-        TODO("Not yet implemented")
+        
     }
 
     override fun isLoadingDialogShowing(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
     override fun showMessage(message: CharSequence) {
-        TODO("Not yet implemented")
+        
     }
 
     override fun showMessage(messageId: Int) {
-        TODO("Not yet implemented")
+        
     }
 
 }

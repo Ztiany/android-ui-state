@@ -42,7 +42,10 @@ inline fun <L, D, E> Resource<L, D, E>.onNoData(onNoData: () -> Unit): Resource<
     return this
 }
 
-
 typealias ResourceD<D> = Resource<Unit, D, Unit>
 typealias ResourceDE<D, E> = Resource<Unit, D, E>
 typealias ResourceLD<L, D> = Resource<L, D, Unit>
+
+fun <L, D, E> Resource<L, D, E>.isLoading(): Boolean {
+    return this is Loading
+}

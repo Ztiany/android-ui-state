@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.base.foundation.data.Resource
 import com.android.base.foundation.data.ResourceD
+import com.android.base.foundation.data.Uninitialized
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 data class Game(val id: Int)
 
@@ -15,6 +18,9 @@ class TestViewModel : ViewModel() {
 
     private val _gameDetailState1 = MutableLiveData<ResourceD<Game>>()
     val gameDetailState1: LiveData<ResourceD<Game>> = _gameDetailState1
+
+    private val _gameDetailState2 = MutableStateFlow<Resource<Step, Game, Reason>>(Uninitialized)
+    val gameDetailState2: StateFlow<Resource<Step, Game, Reason>> = _gameDetailState2
 
     fun test() {
         _gameDetailState.value = Resource.loading()

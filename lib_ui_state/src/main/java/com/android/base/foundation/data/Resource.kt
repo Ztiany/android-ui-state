@@ -32,6 +32,8 @@ sealed class Resource<out L, out D, out E> {
 
 }
 
+object Uninitialized : Resource<Nothing, Nothing, Nothing>()
+
 class Loading<L>(val step: L?) : Resource<L, Nothing, Nothing>() {
 
     override fun toString(): String {
