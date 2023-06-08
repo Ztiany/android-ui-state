@@ -50,6 +50,6 @@ fun <L, D, E> Resource<L, D, E>.isLoading(): Boolean {
     return this is Loading
 }
 
-fun <L, D, E> initialState(): Resource<L, D, E> {
+fun <L, D, E> Initial(): Resource<L, D, E> {
     return InitialState
 }
