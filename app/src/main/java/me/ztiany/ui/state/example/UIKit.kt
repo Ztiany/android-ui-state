@@ -81,7 +81,7 @@ private fun <H, L, D, E> H.handleResourceInternal(
 ) where H : LoadingViewHost, H : LifecycleOwner {
 
     when (state) {
-        Uninitialized -> {
+        InitialState -> {
             //no op
         }
 
