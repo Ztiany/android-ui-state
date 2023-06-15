@@ -3,9 +3,10 @@ package me.ztiany.ui.state.example
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android.base.foundation.data.Resource
-import com.android.base.foundation.data.ResourceD
-import com.android.base.foundation.data.Initial
+import com.android.base.foundation.data.State
+import com.android.base.foundation.data.StateD
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -13,25 +14,28 @@ data class Game(val id: Int)
 
 class TestViewModel : ViewModel() {
 
-    private val _gameDetailState = MutableLiveData<Resource<Step, Game, Reason>>()
-    val gameDetailState: LiveData<Resource<Step, Game, Reason>> = _gameDetailState
+    private val _gameDetailState = MutableLiveData<State<Step, Game, Reason>>()
+    val gameDetailState: LiveData<State<Step, Game, Reason>> = _gameDetailState
 
-    private val _gameDetailState1 = MutableLiveData<ResourceD<Game>>()
-    val gameDetailState1: LiveData<ResourceD<Game>> = _gameDetailState1
+    private val _gameDetailState1 = MutableLiveData<StateD<Game>>()
+    val gameDetailState1: LiveData<StateD<Game>> = _gameDetailState1
 
-    private val _gameDetailState2 = MutableStateFlow(Initial<Step, Game, Reason>())
-    val gameDetailState2: StateFlow<Resource<Step, Game, Reason>> = _gameDetailState2
+    private val _gameDetailState2 = MutableStateFlow<State<Step, Game, Reason>>(State.loading())
+    val gameDetailState2: StateFlow<State<Step, Game, Reason>> = _gameDetailState2
+
+    private val _gameDetailState3 = MutableSharedFlow<State<Step, Game, Reason>>(replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+    val gameDetailState3: StateFlow<State<Step, Game, Reason>> = _gameDetailState2
 
     fun test() {
-        _gameDetailState.value = Resource.loading()
-        _gameDetailState.value = Resource.noData()
-        _gameDetailState.value = Resource.success(Game(1))
-        _gameDetailState.value = Resource.error(NullPointerException())
+        _gameDetailState.value = State.loading()
+        _gameDetailState.value = State.noData()
+        _gameDetailState.value = State.success(Game(1))
+        _gameDetailState.value = State.error(NullPointerException())
 
-        _gameDetailState1.value = Resource.loading()
-        _gameDetailState1.value = Resource.noData()
-        _gameDetailState1.value = Resource.success(Game(1))
-        _gameDetailState1.value = Resource.error(NullPointerException())
+        _gameDetailState1.value = State.loading()
+        _gameDetailState1.value = State.noData()
+        _gameDetailState1.value = State.success(Game(1))
+        _gameDetailState1.value = State.error(NullPointerException())
 
         _gameDetailState.setLoading()
         _gameDetailState.setError(NullPointerException(), Reason("Null"))

@@ -1,23 +1,39 @@
 package com.android.base.foundation.data
 
 /** When in loading. */
-inline fun <L, D, E> Resource<L, D, E>.onLoading(onLoading: () -> Unit): Resource<L, D, E> {
+inline fun <L, D, E> State<L, D, E>.onLoading(onLoading: () -> Unit): State<L, D, E> {
     if (this is Loading) {
         onLoading()
     }
     return this
 }
 
+/** When in loading. */
+inline fun <L, D, E> State<L, D, E>.onLoadingWithStep(onLoading: (L?) -> Unit): State<L, D, E> {
+    if (this is Loading) {
+        onLoading(step)
+    }
+    return this
+}
+
 /** When error occurred. */
-inline fun <L, D, E> Resource<L, D, E>.onError(onError: (error: Throwable) -> Unit): Resource<L, D, E> {
+inline fun <L, D, E> State<L, D, E>.onError(onError: (error: Throwable) -> Unit): State<L, D, E> {
     if (this is Error) {
         onError(error)
     }
     return this
 }
 
+/** When error occurred. */
+inline fun <L, D, E> State<L, D, E>.onErrorWithReason(onError: (error: Throwable, reason: E?) -> Unit): State<L, D, E> {
+    if (this is Error) {
+        onError(error, reason)
+    }
+    return this
+}
+
 /** When succeeded. */
-inline fun <L, D, E> Resource<L, D, E>.onSuccess(onSuccess: (data: D?) -> Unit): Resource<L, D, E> {
+inline fun <L, D, E> State<L, D, E>.onSuccess(onSuccess: (data: D?) -> Unit): State<L, D, E> {
     if (this is NoData) {
         onSuccess(null)
     } else if (this is Data<D>) {
@@ -27,7 +43,7 @@ inline fun <L, D, E> Resource<L, D, E>.onSuccess(onSuccess: (data: D?) -> Unit):
 }
 
 /** When succeeded with data. */
-inline fun <L, D, E> Resource<L, D, E>.onData(onData: (data: D) -> Unit): Resource<L, D, E> {
+inline fun <L, D, E> State<L, D, E>.onData(onData: (data: D) -> Unit): State<L, D, E> {
     if (this is Data<D>) {
         onData(value)
     }
@@ -35,21 +51,14 @@ inline fun <L, D, E> Resource<L, D, E>.onData(onData: (data: D) -> Unit): Resour
 }
 
 /** When succeeded without data. */
-inline fun <L, D, E> Resource<L, D, E>.onNoData(onNoData: () -> Unit): Resource<L, D, E> {
+inline fun <L, D, E> State<L, D, E>.onNoData(onNoData: () -> Unit): State<L, D, E> {
     if (this is Data<D>) {
         onNoData()
     }
     return this
 }
 
-typealias ResourceD<D> = Resource<Unit, D, Unit>
-typealias ResourceDE<D, E> = Resource<Unit, D, E>
-typealias ResourceLD<L, D> = Resource<L, D, Unit>
-
-fun <L, D, E> Resource<L, D, E>.isLoading(): Boolean {
-    return this is Loading
-}
-
-fun <L, D, E> Initial(): Resource<L, D, E> {
-    return InitialState
-}
+typealias StateN = State<Unit, Unit, Unit>
+typealias StateD<D> = State<Unit, D, Unit>
+typealias StateDE<D, E> = State<Unit, D, E>
+typealias StateLD<L, D> = State<L, D, Unit>
