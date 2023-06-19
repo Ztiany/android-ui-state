@@ -55,7 +55,7 @@ class ResourceHandlerBuilder<L, D, E> {
  */
 fun <H, L, D, E> H.handleLiveData(
     data: LiveData<State<L, D, E>>,
-    handlerBuilder: ResourceHandlerBuilder<L, D, E>.() -> Unit
+    handlerBuilder: ResourceHandlerBuilder<L, D, E>.() -> Unit,
 ) where H : LoadingViewHost, H : LifecycleOwner {
     val builder = ResourceHandlerBuilder<L, D, E>()
     handlerBuilder(builder)
@@ -68,7 +68,7 @@ fun <H, L, D, E> H.handleLiveData(
 /** refer to [handleLiveData]. */
 fun <H, L, D, E> H.handleResource(
     state: State<L, D, E>,
-    handlerBuilder: ResourceHandlerBuilder<L, D, E>.() -> Unit
+    handlerBuilder: ResourceHandlerBuilder<L, D, E>.() -> Unit,
 ) where H : LoadingViewHost, H : LifecycleOwner {
     val builder = ResourceHandlerBuilder<L, D, E>()
     handlerBuilder(builder)
@@ -77,10 +77,12 @@ fun <H, L, D, E> H.handleResource(
 
 private fun <H, L, D, E> H.handleResourceInternal(
     state: State<L, D, E>,
-    handlerBuilder: ResourceHandlerBuilder<L, D, E>
+    handlerBuilder: ResourceHandlerBuilder<L, D, E>,
 ) where H : LoadingViewHost, H : LifecycleOwner {
 
     when (state) {
+        is Idle -> {}
+
         //----------------------------------------loading start
         // The loading state should always be handled, so we ignore the clearAfterHanded config here.
         is Loading -> {
@@ -129,6 +131,7 @@ private fun <H, L, D, E> H.handleResourceInternal(
                         handlerBuilder.onSuccess?.invoke(null)
                         handlerBuilder.onNoData?.invoke()
                     }
+
                     is Data<D> -> {
                         handlerBuilder.onSuccess?.invoke(state.value)
                         handlerBuilder.onData?.invoke(state.value)

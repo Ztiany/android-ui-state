@@ -32,6 +32,8 @@ sealed class State<out L, out D, out E> {
 
 }
 
+object Idle : State<Nothing, Nothing, Nothing>()
+
 class Loading<L>(val step: L?) : State<L, Nothing, Nothing>() {
 
     override fun toString(): String {
