@@ -1,4 +1,4 @@
-package com.android.base.foundation.data
+package com.android.base.foundation.state
 
 /**
  * A resource represents loading, data and error state.

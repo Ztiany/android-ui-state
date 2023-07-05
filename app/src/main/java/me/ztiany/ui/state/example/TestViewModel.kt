@@ -3,8 +3,12 @@ package me.ztiany.ui.state.example
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android.base.foundation.data.State
-import com.android.base.foundation.data.StateD
+import com.android.base.foundation.state.State
+import com.android.base.foundation.state.StateD
+import com.android.base.foundation.state.setData
+import com.android.base.foundation.state.setError
+import com.android.base.foundation.state.setLoading
+import com.android.base.foundation.state.setSuccess
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

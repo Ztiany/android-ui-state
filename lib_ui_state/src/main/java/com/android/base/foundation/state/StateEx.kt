@@ -1,4 +1,4 @@
-package com.android.base.foundation.data
+package com.android.base.foundation.state
 
 /** When in loading. */
 inline fun <L, D, E> State<L, D, E>.onLoading(onLoading: () -> Unit): State<L, D, E> {

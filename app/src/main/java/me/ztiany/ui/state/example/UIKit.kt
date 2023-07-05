@@ -3,7 +3,7 @@
 package me.ztiany.ui.state.example
 
 import androidx.lifecycle.*
-import com.android.base.foundation.data.*
+import com.android.base.foundation.state.*
 
 fun LoadingViewHost.dismissLoadingDialogDelayed(onDismiss: (() -> Unit)? = null) {
     dismissLoadingDialog(500, onDismiss)
