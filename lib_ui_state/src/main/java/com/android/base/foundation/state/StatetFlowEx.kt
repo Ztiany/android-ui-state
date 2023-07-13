@@ -1,30 +1,28 @@
 package com.android.base.foundation.state
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
-internal fun <T> MutableStateFlow<T>.asImmutable(): Flow<T> = this
-
-suspend fun <L : Any?, D : Any?, E : Any?> MutableStateFlow<State<L, D, E>>.emitLoading(step: L? = null) {
-    emit(State.loading(step))
+fun <L : Any?, D : Any?, E : Any?> MutableStateFlow<State<L, D, E>>.updateToLoading(step: L? = null) {
+    update { State.loading(step) }
 }
 
-suspend fun <L : Any?, D : Any?, E : Any?> MutableStateFlow<State<L, D, E>>.emitError(error: Throwable) {
-    emit(State.error(error))
+fun <L : Any?, D : Any?, E : Any?> MutableStateFlow<State<L, D, E>>.updateToError(error: Throwable) {
+    update { State.error(error) }
 }
 
-suspend fun <L : Any?, D : Any?, E : Any?> MutableStateFlow<State<L, D, E>>.emitData(data: D?) {
+fun <L : Any?, D : Any?, E : Any?> MutableStateFlow<State<L, D, E>>.updateToData(data: D?) {
     val state: State<L, D, E> = if (data == null) {
         State.noData()
     } else {
         State.success(data)
     }
-    emit(state)
+    update { state }
 }
 
-suspend fun <L : Any?, D : Any?, E : Any?> MutableStateFlow<State<L, D, E>>.emitSuccess() {
+fun <L : Any?, D : Any?, E : Any?> MutableStateFlow<State<L, D, E>>.updateToSuccess() {
     val state: State<L, D, E> = State.noData()
-    emit(state)
+    update { state }
 }
 
 fun <L : Any?, D : Any?, E : Any?> MutableStateFlow<State<L, D, E>>.setLoading(step: L? = null) {

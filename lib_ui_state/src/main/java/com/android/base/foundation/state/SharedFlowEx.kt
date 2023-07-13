@@ -1,9 +1,6 @@
 package com.android.base.foundation.state
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-
-internal fun <T> MutableSharedFlow<T>.asImmutable(): Flow<T> = this
 
 suspend fun <L : Any?, D : Any?, E : Any?> MutableSharedFlow<State<L, D, E>>.emitLoading(step: L? = null) {
     emit(State.loading(step))
@@ -27,24 +24,24 @@ suspend fun <L : Any?, D : Any?, E : Any?> MutableSharedFlow<State<L, D, E>>.emi
     emit(state)
 }
 
-fun <L : Any?, D : Any?, E : Any?> MutableSharedFlow<State<L, D, E>>.tryEmitLoading(step: L? = null) {
-    tryEmit(State.loading(step))
+fun <L : Any?, D : Any?, E : Any?> MutableSharedFlow<State<L, D, E>>.tryEmitLoading(step: L? = null): Boolean {
+    return tryEmit(State.loading(step))
 }
 
-fun <L : Any?, D : Any?, E : Any?> MutableSharedFlow<State<L, D, E>>.tryEmitError(error: Throwable) {
-    tryEmit(State.error(error))
+fun <L : Any?, D : Any?, E : Any?> MutableSharedFlow<State<L, D, E>>.tryEmitError(error: Throwable): Boolean {
+    return tryEmit(State.error(error))
 }
 
-fun <L : Any?, D : Any?, E : Any?> MutableSharedFlow<State<L, D, E>>.tryEmitData(data: D?) {
+fun <L : Any?, D : Any?, E : Any?> MutableSharedFlow<State<L, D, E>>.tryEmitData(data: D?): Boolean {
     val state: State<L, D, E> = if (data == null) {
         State.noData()
     } else {
         State.success(data)
     }
-    tryEmit(state)
+    return tryEmit(state)
 }
 
-fun <L : Any?, D : Any?, E : Any?> MutableSharedFlow<State<L, D, E>>.tryEmitSuccess() {
+fun <L : Any?, D : Any?, E : Any?> MutableSharedFlow<State<L, D, E>>.tryEmitSuccess(): Boolean {
     val state: State<L, D, E> = State.noData()
-    tryEmit(state)
+    return tryEmit(state)
 }
