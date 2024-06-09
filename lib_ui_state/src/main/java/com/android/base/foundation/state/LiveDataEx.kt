@@ -3,7 +3,6 @@ package com.android.base.foundation.state
 import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 
-
 fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.setLoading(step: L? = null) {
     value = State.loading(step)
 }
