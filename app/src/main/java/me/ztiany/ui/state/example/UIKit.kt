@@ -37,7 +37,7 @@ class ResourceHandlerBuilder<L, D, E> {
     var forceLoading: Boolean = true
 
     /** mark the event handled so that it will not be handled again. refer [ViewModel One-off event antipatterns](https://manuelvivo.dev/viewmodel-events-antipatterns) for more details. */
-    var clearAfterHanded: Boolean = true
+    var handleAsEvent: Boolean = true
 }
 
 /**
@@ -101,7 +101,7 @@ private fun <H, L, D, E> H.handleResourceInternal(
             if (state.isHandled) {
                 return
             }
-            if (handlerBuilder.clearAfterHanded) {
+            if (handlerBuilder.handleAsEvent) {
                 state.markAsHandled()
             }
 
@@ -121,7 +121,7 @@ private fun <H, L, D, E> H.handleResourceInternal(
             if (state.isHandled) {
                 return
             }
-            if (handlerBuilder.clearAfterHanded) {
+            if (handlerBuilder.handleAsEvent) {
                 state.markAsHandled()
             }
 
