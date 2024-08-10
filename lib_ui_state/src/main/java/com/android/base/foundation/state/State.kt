@@ -21,29 +21,36 @@ sealed class State<out L, out D, out E> {
             return Data(data)
         }
 
-        fun <L, D, E> error(error: Throwable, reason: E? = null): State<L, D, E> {
-            return Error(error, reason)
+        fun <L, D, E> error(error: Throwable, reason: E? = null, data: D? = null): State<L, D, E> {
+            return Error(error, reason, data)
         }
 
-        fun <L, D, E> loading(step: L? = null): State<L, D, E> {
-            return Loading(step)
+        fun <L, D, E> loading(step: L? = null, data: D? = null): State<L, D, E> {
+            return Loading(step, data)
         }
 
     }
 
 }
 
-object Idle : State<Nothing, Nothing, Nothing>()
+data object Idle : State<Nothing, Nothing, Nothing>()
 
-class Loading<L>(val step: L?) : State<L, Nothing, Nothing>() {
+class Loading<L, D>(
+    val step: L?,
+    var data: D? = null
+) : State<L, D, Nothing>() {
 
     override fun toString(): String {
-        return "Loading(hash=${hashCode()}, step=$step)"
+        return "Loading(hash=${hashCode()}, step=$step), data=$data"
     }
 
 }
 
-class Error<E>(val error: Throwable, val reason: E?) : State<Nothing, Nothing, E>() {
+class Error<E, D>(
+    val error: Throwable,
+    val reason: E?,
+    val data: D? = null
+) : State<Nothing, D, E>() {
 
     private var handled = AtomicBoolean(false)
 
@@ -55,7 +62,7 @@ class Error<E>(val error: Throwable, val reason: E?) : State<Nothing, Nothing, E
     }
 
     override fun toString(): String {
-        return "Error(error=$error, reason=$reason, handled=$isHandled)"
+        return "Error(error=$error, reason=$reason, handled=$isHandled), data=$data"
     }
 
 }

@@ -55,9 +55,9 @@ class TestViewModel : ViewModel() {
 }
 
 sealed class Step {
-    object Step1 : Step()
-    object Step2 : Step()
-    object Step3 : Step()
+    data object Step1 : Step()
+    data object Step2 : Step()
+    data object Step3 : Step()
 }
 
 data class Reason(val message: String)

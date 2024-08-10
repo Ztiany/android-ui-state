@@ -11,6 +11,14 @@ fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.setError(erro
     value = State.error(error, reason)
 }
 
+fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.setLoadingRetained(step: L? = null) {
+    value = value?.toLoadingRetained(step) ?: State.loading(step)
+}
+
+fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.setErrorRetained(error: Throwable, reason: E? = null) {
+    value = value?.toErrorRetained(error, reason) ?: State.error(error, reason)
+}
+
 fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.setData(data: D?) {
     value = if (data == null) {
         State.noData()
@@ -29,6 +37,14 @@ fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.postLoading(s
 
 fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.postError(error: Throwable, reason: E? = null) {
     postValue(State.error(error, reason))
+}
+
+fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.postLoadingRetained(step: L? = null) {
+    postValue(value?.toLoadingRetained(step) ?: State.loading(step))
+}
+
+fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.postErrorRetained(error: Throwable, reason: E? = null) {
+    postValue(value?.toErrorRetained(error, reason) ?: State.error(error, reason))
 }
 
 fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.postData(data: D?) {
@@ -58,6 +74,22 @@ fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.setErrorSafel
         value = State.error(error, reason)
     } else {
         postValue(State.error(error, reason))
+    }
+}
+
+fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.setLoadingRetainedSafely(step: L? = null) {
+    if (isMainThread()) {
+        value = value?.toLoadingRetained(step) ?: State.loading(step)
+    } else {
+        postValue(value?.toLoadingRetained(step) ?: State.loading(step))
+    }
+}
+
+fun <L : Any?, D : Any?, E : Any?> MutableLiveData<State<L, D, E>>.setErrorRetainedSafely(error: Throwable, reason: E? = null) {
+    if (isMainThread()) {
+        value = value?.toErrorRetained(error, reason) ?: State.error(error, reason)
+    } else {
+        postValue(value?.toErrorRetained(error, reason) ?: State.error(error, reason))
     }
 }
 
