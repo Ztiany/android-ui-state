@@ -41,17 +41,22 @@ class ResourceHandlerBuilder<L, D, E> {
 }
 
 /**
- * 这是一个网络请求状态转换处理的通用逻辑封装，一般情况下，网络请求流程为：
+ * This function encapsulates common logic for handling network request states.
+ * Typically, the network request flow includes:
  *
- * 1. 发起网络请求，展示 loading 对话框。
- * 2. 网络请求正常返回，则展示调用结果。
- * 3. 网络请求发送错误，则提示用户请求错误。
+ * 1. Initiating the network request and displaying a loading dialog.
+ * 2. Displaying the result upon successful network response.
+ * 3. Prompting the user in case of a network request error.
  *
- * [State] 表示请求状态，每次状态变更，[LiveData] 都应该进行通知，该方法订阅 [LiveData] 并对各种状态进行处理。
- * 展示 loading 和对错误进行提示都是自动进行的，通常情况下，只需要提供 [ResourceHandlerBuilder.onSuccess] 对正常的网络结果进行处理即可。
- * 当然如果希望自己处理错误，则可以提供 [ResourceHandlerBuilder.onError] 回调。如果希望自己处理加载中的逻辑，则可以提供 [ResourceHandlerBuilder.onLoading] 回调。
+ * [State] represents the request state, and each state change should notify the associated [LiveData].
+ * This method subscribes to [LiveData] and handles various states.
+ * Automatic handling includes displaying loading and error prompts.
+ * Usually, only [StateHandlerBuilder.onSuccess] is required to handle successful network results.
+ * Optionally, you can provide [StateHandlerBuilder.onError] to handle errors yourself,
+ * and [StateHandlerBuilder.onLoading] to customize loading logic.
  *
- * 另外需要注意的是：[ResourceHandlerBuilder.onSuccess] =  [ResourceHandlerBuilder.onData] + [ResourceHandlerBuilder.onNoData]，请根据你的偏好进行选择。
+ * Additionally, note that [StateHandlerBuilder.onSuccess] = [StateHandlerBuilder.onData] + [StateHandlerBuilder.onNoData].
+ * Choose based on your preference.
  */
 fun <H, L, D, E> H.handleLiveData(
     data: LiveData<State<L, D, E>>,

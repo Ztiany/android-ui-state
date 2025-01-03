@@ -1,12 +1,13 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     id "com.android.library"
     id "kotlin-android"
-    id "maven-publish"
+    id "com.vanniktech.maven.publish" version "0.30.0"
 }
 
 android {
     namespace "com.android.base.foundation.state"
-
     compileSdk 34
     defaultConfig {
         minSdk 21
@@ -25,7 +26,6 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
-
 }
 
 dependencies {
@@ -35,23 +35,38 @@ dependencies {
     compileOnly "androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.4"
 }
 
-tasks.register('javadoc', Javadoc) {
-    options.encoding = "utf-8"
-}
+mavenPublishing {
+    // configuring maven central
+    // or when publishing to https://central.sonatype.com/
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
 
-group = 'io.github.ztiany'
-version = '1.0'
+    // configuring the pom
+    coordinates("io.github.ztiany", "android-ui-state", "2.0.0")
 
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                from components.release
-                groupId = 'io.github.ztiany'
-                artifactId = 'android-uistate'
-                version = '1.0.3'
+    pom {
+        name = "android-ui-state"
+        description = "An android library makes http requesting easy."
+        inceptionYear = "2020"
+        url = "https://github.com/Ztiany/android-ui-state/"
+        licenses {
+            license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                distribution = "http://www.apache.org/licenses/LICENSE-2.0.txt"
             }
+        }
+        developers {
+            developer {
+                id = "ztiany"
+                name = "Alien"
+                url = "https://github.com/Ztiany/"
+            }
+        }
+        scm {
+            url = "https://github.com/Ztiany/android-ui-state/"
+            connection = "scm:git:git://github.com/Ztiany/android-ui-state.git"
+            developerConnection = "scm:git:ssh://git@github.com/Ztiany/android-ui-state.git"
         }
     }
 }
