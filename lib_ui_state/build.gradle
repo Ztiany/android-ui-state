@@ -42,11 +42,11 @@ mavenPublishing {
     signAllPublications()
 
     // configuring the pom
-    coordinates("io.github.ztiany", "android-ui-state", "2.0.0")
+    coordinates("io.github.ztiany", "android-ui-state", "2.0.1")
 
     pom {
         name = "android-ui-state"
-        description = "An android library makes http requesting easy."
+        description = "A class representing the state of ui."
         inceptionYear = "2020"
         url = "https://github.com/Ztiany/android-ui-state/"
         licenses {
